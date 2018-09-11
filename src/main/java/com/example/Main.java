@@ -81,8 +81,6 @@ public class Main {
   String db(Map<String, Object> model, @RequestParam(name = "from", defaultValue = "unknow") String from) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("DROP TABLE ticks IF EXISTS");
-      stmt.executeUpdate("DROP TABLE ask IF EXISTS");
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ask (tick timestamp, usr varchar)");
       stmt.executeUpdate("INSERT INTO ask VALUES (now(), '" + from + "')");
       // stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
