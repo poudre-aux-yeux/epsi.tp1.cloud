@@ -34,6 +34,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static javax.measure.unit.SI.KILOGRAM;
+import javax.measure.quantity.Mass;
+import org.jscience.physics.model.RelativisticModel;
+import org.jscience.physics.amount.Amount;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 @Controller
 @SpringBootApplication
 public class Main {
@@ -51,6 +57,14 @@ public class Main {
   @RequestMapping("/")
   String index() {
     return "index";
+  }
+
+  @RequestMapping(value = "/hello")
+  @ResponseBody
+  String hello() {
+    RelativisticModel.select();
+    Amount<Mass> m = Amount.valueOf("12 GeV").to(KILOGRAM);
+    return "E=mc^2: 12 GeV = " + m.toString();
   }
 
   @RequestMapping("/db")
