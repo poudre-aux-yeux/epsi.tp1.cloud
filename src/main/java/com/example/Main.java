@@ -82,11 +82,12 @@ public class Main {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
       stmt.executeUpdate("DROP TABLE ticks");
+      stmt.executeUpdate("DROP TABLE ask");
       stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ask (tick timestamp, usr varchar)");
-      stmt.executeUpdate("INSERT INTO ask VALUES (now(), from)");
+      stmt.executeUpdate("INSERT INTO ask VALUES (now(), '" + from + "')");
       // stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
       // stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
+      ResultSet rs = stmt.executeQuery("SELECT * FROM ask");
 
       ArrayList<String> output = new ArrayList<String>();
       while (rs.next()) {
