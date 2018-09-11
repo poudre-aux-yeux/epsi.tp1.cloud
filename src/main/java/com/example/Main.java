@@ -67,6 +67,15 @@ public class Main {
     return "E=mc^2: 12 GeV = " + m.toString();
   }
 
+  @RequestMapping(value = "/convertion")
+  @ResponseBody
+  String convertion() {
+    RelativisticModel.select();
+    String energy = System.getenv().get("ENERGY");
+    Amount<Mass> m = Amount.valueOf(energy).to(KILOGRAM);
+    return "E=mc^2: " + energy + " = " + m.toString();
+  }
+
   @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
