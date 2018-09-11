@@ -38,6 +38,7 @@ import static javax.measure.unit.SI.KILOGRAM;
 import javax.measure.quantity.Mass;
 import org.jscience.physics.model.RelativisticModel;
 import org.jscience.physics.amount.Amount;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -77,11 +78,14 @@ public class Main {
   }
 
   @RequestMapping("/db")
-  String db(Map<String, Object> model) {
+  String db(Map<String, Object> model, @RequestParam(name = "from", defaultValue = "unknow") String from) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
+      stmt.executeUpdate("DROP TABLE ticks");
+      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ask (tick timestamp, usr varchar)");
+      stmt.executeUpdate("INSERT INTO ask VALUES (now(), from)");
+      // stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
+      // stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
       ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
 
       ArrayList<String> output = new ArrayList<String>();
